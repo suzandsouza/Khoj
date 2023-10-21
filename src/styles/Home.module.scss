@@ -1,0 +1,77 @@
+.homeContainer {
+    .containerController {
+      // background-image: url("./background.png");
+      height: 92.8vh;
+      display: flex;
+      justify-content: center;
+      .text {
+        width: 80%;
+        margin: auto;
+        h1 {
+          font-size: 4.2rem;
+          font-weight: 600;
+          width: 80%;
+        }
+        h2 {
+          font-size: 2.2rem;
+          color: #8c8c8c;
+          width: 80%;
+        }
+        .button {
+          height: 3rem;
+          font-weight: 600;
+          margin: 0;
+          border-radius: 8px;
+          margin-top: 2rem;
+          width: 20rem;
+        }
+      }
+    }
+    .partners {
+      // height: 10vh;
+      padding: 2rem 0;
+      background-color: #023c6f;
+      display: flex;
+      justify-content: space-around;
+      img {
+        height: 4rem;
+        width: auto;
+      }
+    }
+  }
+  
+  .features {
+    .heading {
+      font-size: 1.4rem;
+      padding-top: 6rem;
+      text-align: center;
+      margin: 0;
+    }
+    .divider {
+      background-color: #1b76ff;
+      width: 12%;
+      min-width: 2rem;
+      height: 3.5px;
+      margin: 0.4rem auto;
+    }
+    .cardController {
+      margin: 5rem 0;
+      justify-content: space-around;
+      // width: 80%;
+      // margin: auto;
+  
+      .card {
+        width: 25%;
+        box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        text-align: center;
+  
+        img {
+          height: 8rem;
+          width: auto;
+          border-radius: 8px;
+          margin: 2rem 0;
+        }
+      }
+    }
+  }
