@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Signin from "./Signin";
+import UserSigninApp from "./Signin";
 
 const { ethers } = require("ethers");
 
@@ -9,7 +11,7 @@ const Signup = () => {
   const [role, setRole] = useState("");
   const [registered, setRegistered] = useState(false);
 
-  const contractAddress = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8";
+  const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
   const contractABI = [
 	{
 		"inputs": [
@@ -123,10 +125,18 @@ const Signup = () => {
 
       // Get the signer
       const signer = provider.getSigner();
-
+	  console.log(signer)
+	  console.log(signer._address)
       // Create a contract instance
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
-
+	  
+	  try {
+		const valid = await contract.authenticate(email, password);
+		console.log(valid);
+	  } catch (error) {
+		console.error("An error occurred while authenticating: ", error);
+	  }
+	  
       if (role === "researcher") {
         await contract.registerAsResearcher(email, password);
       } else if (role === "funder") {
@@ -141,6 +151,7 @@ const Signup = () => {
       console.error(error);
       alert("An error occurred during signup");
     }
+	
   };
 
   const handleReset = () => {
@@ -156,7 +167,7 @@ const Signup = () => {
         <div>
           <h2>Registration Successful!</h2>
           <p>
-            Please proceed to the <Link to="/signin">Signin Page</Link> to log in.
+            Please proceed to the <Link to="/signin" element={UserSigninApp}>Signin Page</Link> to log in.
           </p>
           <button onClick={handleReset}>Register Another User</button>
         </div>
