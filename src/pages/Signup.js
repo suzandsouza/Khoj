@@ -127,9 +127,12 @@ const Signup = () => {
       const signer = provider.getSigner();
 	  console.log(signer)
 	  console.log(signer._address)
+	  
+      const address = await signer.getAddress();
+  console.log(address)
       // Create a contract instance
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
-	  
+	  console.log(contract.functions)
 	  try {
 		const valid = await contract.authenticate(email, password);
 		console.log(valid);
@@ -145,7 +148,7 @@ const Signup = () => {
         alert("Invalid role");
         return;
       }
-
+	 
       setRegistered(true);
     } catch (error) {
       console.error(error);
