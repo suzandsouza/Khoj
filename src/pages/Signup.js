@@ -1,113 +1,147 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Signin from "./Signin";
-import UserSigninApp from "./Signin";
+//import { readFileSync } from 'fs';
+import { Web3Provider } from 'ethers';
+
+
 
 const { ethers } = require("ethers");
+
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [registered, setRegistered] = useState(false);
+  
+  
+  const contractAddress = "0x33c86D2726F2A3BAECC420885FCf0dD7b4DDa4B9";
 
-  const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
-  const contractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "funders",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "password",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "role",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_password",
-				"type": "string"
-			}
-		],
-		"name": "registerAsFunder",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_password",
-				"type": "string"
-			}
-		],
-		"name": "registerAsResearcher",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "researchers",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "password",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "role",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
+  const contractABI=[
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_password",
+          "type": "string"
+        }
+      ],
+      "name": "registerFunder",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_password",
+          "type": "string"
+        }
+      ],
+      "name": "registerResearcher",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_username",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_password",
+          "type": "string"
+        }
+      ],
+      "name": "authenticate",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "funders",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "username",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "password",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "entity",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "researchers",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "username",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "password",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "entity",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
 
   const handleSignup = async () => {
     try {
@@ -125,36 +159,25 @@ const Signup = () => {
 
       // Get the signer
       const signer = provider.getSigner();
-	  console.log(signer)
-	  console.log(signer._address)
-	  
-      const address = await signer.getAddress();
-  console.log(address)
+
       // Create a contract instance
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
-	  console.log(contract.functions)
-	  try {
-		const valid = await contract.authenticate(email, password);
-		console.log(valid);
-	  } catch (error) {
-		console.error("An error occurred while authenticating: ", error);
-	  }
-	  
+
       if (role === "researcher") {
-        await contract.registerAsResearcher(email, password);
+        await contract.registerResearcher(email, password);
       } else if (role === "funder") {
-        await contract.registerAsFunder(email, password);
+        await contract.registerFunder(email, password);
       } else {
         alert("Invalid role");
         return;
       }
-	 
+	
       setRegistered(true);
+	  alert("success")
     } catch (error) {
       console.error(error);
       alert("An error occurred during signup");
     }
-	
   };
 
   const handleReset = () => {
@@ -170,7 +193,7 @@ const Signup = () => {
         <div>
           <h2>Registration Successful!</h2>
           <p>
-            Please proceed to the <Link to="/signin" element={UserSigninApp}>Signin Page</Link> to log in.
+            Please proceed to the <Link to="/signin">Signin Page</Link> to log in.
           </p>
           <button onClick={handleReset}>Register Another User</button>
         </div>
