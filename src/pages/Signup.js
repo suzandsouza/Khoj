@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-//import { readFileSync } from 'fs';
 import { Web3Provider } from 'ethers';
 
-
-
+const Web3 = require("web3");
 const { ethers } = require("ethers");
 
 

@@ -8,7 +8,9 @@ const Login = () => {
 	const [role, setRole] = useState("");
 	const navigate = useNavigate();
 
+
 const contractAddress="0x31c4A8DFa9F9Ab031450b7BADBacCdca29Be1060";
+
 const contractABI=[
 	{
 		"inputs": [
@@ -264,46 +266,7 @@ const contractABI=[
 		  alert("An error occurred during login");
 		}
 	  };
-	// const handleLogin = async () => {
-	// 	try {
-	// 		if (typeof window.ethereum === 'undefined') {
-	// 			alert("Please install and unlock MetaMask to use this application.");
-	// 			return;
-	// 		}
 	
-	// 		const provider = new ethers.providers.Web3Provider(window.ethereum);
-	// 		await provider.send("eth_requestAccounts", []);
-	// 		const signer = provider.getSigner();
-	// 		const address = await signer.getAddress();
-	// 		console.log(address);
-	
-	// 		const contract = new ethers.Contract(contractAddress, contractABI, signer);
-	
-	// 		const researcher = await contract.researchers(address);
-	// 		const funder = await contract.funders(address);
-	
-	// 		if (
-	// 			(researcher.email === email && researcher.password === password) ||
-	// 			(funder.email === email && funder.password === password)
-	// 		) {
-	// 			if (researcher.email === email && researcher.password === password) {
-	// 				setRole("researcher");
-	// 				navigate("/researcher");
-	// 			} else {
-	// 				setRole("funder");
-	// 				navigate("/funder");
-	// 			}
-	// 		} else {
-	// 			alert("Invalid email or password");
-	// 		}
-	// 	} catch (error) {
-	// 		console.error(error);
-	// 		alert("An error occurred during login");
-	// 	}
-	// };
-	
-			
-  
 	return (
 	  <div>
 		<h2>User Login</h2>
