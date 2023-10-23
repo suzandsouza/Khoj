@@ -11,6 +11,10 @@ contract UserRegistry {
     mapping(address => User) public researchers;
     mapping(address => User) public funders;
 
+    // Maintain separate lists of registered addresses
+    address[] public researcherList;
+    address[] public funderList;
+
     function registerAsResearcher(
         string memory _email,
         string memory _password
@@ -20,6 +24,7 @@ contract UserRegistry {
             "User already registered as a researcher"
         );
         researchers[msg.sender] = User(_email, _password, "researcher");
+        researcherList.push(msg.sender); // Add the address to the list
     }
 
     function registerAsFunder(
@@ -31,5 +36,14 @@ contract UserRegistry {
             "User already registered as a funder"
         );
         funders[msg.sender] = User(_email, _password, "funder");
+        funderList.push(msg.sender); // Add the address to the list
+    }
+
+    function getAllResearchers() public view returns (address[] memory) {
+        return researcherList;
+    }
+
+    function getAllFunders() public view returns (address[] memory) {
+        return funderList;
     }
 }

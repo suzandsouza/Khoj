@@ -1,113 +1,23 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Signin from "./Signin";
-import UserSigninApp from "./Signin";
+//import { readFileSync } from 'fs';
+import { Web3Provider } from 'ethers';
+
+import contractABI from "../UserRegistryABI.json"
+import contractAddress from "../URContractAddress.json"
 
 const { ethers } = require("ethers");
+
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [registered, setRegistered] = useState(false);
-
-  const contractAddress = "0xd9145CCE52D386f254917e481eB44e9943F39138";
-  const contractABI = [
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "funders",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "password",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "role",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_password",
-				"type": "string"
-			}
-		],
-		"name": "registerAsFunder",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_password",
-				"type": "string"
-			}
-		],
-		"name": "registerAsResearcher",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "researchers",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "password",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "role",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
+  
+  
+  // const contractAddress = "0x0165878A594ca255338adfa4d48449f69242Eb8F";
+  // const contractABI = [{"type":"function","name":"funderList","constant":true,"inputs":[{"name":null,"type":"uint256","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"uint256","_isParamType":true}],"outputs":[{"name":null,"type":"address","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"address","_isParamType":true}],"payable":false,"stateMutability":"view","gas":null,"_isFragment":true},{"type":"function","name":"funders","constant":true,"inputs":[{"name":null,"type":"address","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"address","_isParamType":true}],"outputs":[{"name":"email","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true},{"name":"password","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true},{"name":"role","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true}],"payable":false,"stateMutability":"view","gas":null,"_isFragment":true},{"type":"function","name":"getAllFunders","constant":true,"inputs":[],"outputs":[{"name":null,"type":"address[]","indexed":null,"components":null,"arrayLength":-1,"arrayChildren":{"name":null,"type":"address","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"address","_isParamType":true},"baseType":"array","_isParamType":true}],"payable":false,"stateMutability":"view","gas":null,"_isFragment":true},{"type":"function","name":"getAllResearchers","constant":true,"inputs":[],"outputs":[{"name":null,"type":"address[]","indexed":null,"components":null,"arrayLength":-1,"arrayChildren":{"name":null,"type":"address","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"address","_isParamType":true},"baseType":"array","_isParamType":true}],"payable":false,"stateMutability":"view","gas":null,"_isFragment":true},{"type":"function","name":"registerAsFunder","constant":false,"inputs":[{"name":"_email","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true},{"name":"_password","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true}],"outputs":[],"payable":false,"stateMutability":"nonpayable","gas":null,"_isFragment":true},{"type":"function","name":"registerAsResearcher","constant":false,"inputs":[{"name":"_email","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true},{"name":"_password","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true}],"outputs":[],"payable":false,"stateMutability":"nonpayable","gas":null,"_isFragment":true},{"type":"function","name":"researcherList","constant":true,"inputs":[{"name":null,"type":"uint256","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"uint256","_isParamType":true}],"outputs":[{"name":null,"type":"address","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"address","_isParamType":true}],"payable":false,"stateMutability":"view","gas":null,"_isFragment":true},{"type":"function","name":"researchers","constant":true,"inputs":[{"name":null,"type":"address","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"address","_isParamType":true}],"outputs":[{"name":"email","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true},{"name":"password","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true},{"name":"role","type":"string","indexed":null,"components":null,"arrayLength":null,"arrayChildren":null,"baseType":"string","_isParamType":true}],"payable":false,"stateMutability":"view","gas":null,"_isFragment":true}]
 
   const handleSignup = async () => {
     try {
@@ -125,18 +35,10 @@ const Signup = () => {
 
       // Get the signer
       const signer = provider.getSigner();
-	  console.log(signer)
-	  console.log(signer._address)
+
       // Create a contract instance
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
-	  
-	  try {
-		const valid = await contract.authenticate(email, password);
-		console.log(valid);
-	  } catch (error) {
-		console.error("An error occurred while authenticating: ", error);
-	  }
-	  
+
       if (role === "researcher") {
         await contract.registerAsResearcher(email, password);
       } else if (role === "funder") {
@@ -145,13 +47,13 @@ const Signup = () => {
         alert("Invalid role");
         return;
       }
-
+	
       setRegistered(true);
+	  alert("success")
     } catch (error) {
       console.error(error);
       alert("An error occurred during signup");
     }
-	
   };
 
   const handleReset = () => {
@@ -167,7 +69,7 @@ const Signup = () => {
         <div>
           <h2>Registration Successful!</h2>
           <p>
-            Please proceed to the <Link to="/signin" element={UserSigninApp}>Signin Page</Link> to log in.
+            Please proceed to the <Link to="/signin">Signin Page</Link> to log in.
           </p>
           <button onClick={handleReset}>Register Another User</button>
         </div>
