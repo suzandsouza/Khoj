@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-
+import abi from "../abi/newabi.json"
 
 function FundersPage() {
   const [requests, setRequests] = useState([]);
-
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [contract, setContract] = useState(null); // Add the contract variable to the state
   useEffect(() => {
     // Connect to the Ethereum network
     connectToEthereum();
@@ -21,218 +22,13 @@ function FundersPage() {
         await window.ethereum.enable();
 
         // Get the deployed contract address and ABI
-        const contractAddress = '0x9ed65CaF160fCF103B4983818bc5D62478FDDA39';
-        const contractABI = [
-          {
-            "inputs": [
-              {
-                "internalType": "string",
-                "name": "_title",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "_amount",
-                "type": "uint256"
-              }
-            ],
-            "name": "makeFundingRequest",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "string",
-                "name": "_username",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "_password",
-                "type": "string"
-              }
-            ],
-            "name": "registerFunder",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "string",
-                "name": "_username",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "_password",
-                "type": "string"
-              }
-            ],
-            "name": "registerResearcher",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "_address",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "_username",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "_password",
-                "type": "string"
-              }
-            ],
-            "name": "authenticate",
-            "outputs": [
-              {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "name": "funders",
-            "outputs": [
-              {
-                "internalType": "string",
-                "name": "username",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "password",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "entity",
-                "type": "string"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              },
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "name": "fundingRequests",
-            "outputs": [
-              {
-                "internalType": "address",
-                "name": "researcher",
-                "type": "address"
-              },
-              {
-                "internalType": "string",
-                "name": "title",
-                "type": "string"
-              },
-              {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-              },
-              {
-                "internalType": "bool",
-                "name": "approved",
-                "type": "bool"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [],
-            "name": "listFundingRequests",
-            "outputs": [
-              {
-                "internalType": "string[]",
-                "name": "",
-                "type": "string[]"
-              },
-              {
-                "internalType": "address[]",
-                "name": "",
-                "type": "address[]"
-              },
-              {
-                "internalType": "uint256[]",
-                "name": "",
-                "type": "uint256[]"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "name": "researchers",
-            "outputs": [
-              {
-                "internalType": "string",
-                "name": "username",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "password",
-                "type": "string"
-              },
-              {
-                "internalType": "string",
-                "name": "entity",
-                "type": "string"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          }
-        ]
-
+        const contractAddress = '0x31D62514BcEfCD6131b5593999a285084EfB6051';
+        const contractABI = abi;
         // Create a new contract instance
         const contract = new ethers.Contract(contractAddress, contractABI, provider);
 
-        // Fetch the funding requests data from the smart contract
-        fetchFundingRequests(contract);
+        // Set the contract instance in the state
+        setContract(contract);
       } else {
         console.error('MetaMask extension not detected');
       }
@@ -241,43 +37,64 @@ function FundersPage() {
     }
   };
 
-  const fetchFundingRequests = async (contract) => {
+  const fetchFundingRequests = async () => {
     try {
       // Call the smart contract function to get the funding requests
       const fundingRequests = await contract.listFundingRequests();
       console.log(fundingRequests)
-      // Update the state with the funding requests data
-      setRequests(fundingRequests);
+      // Transform the fundingRequests data into a suitable format
+      const formattedRequests = fundingRequests.map((request) => ({
+        title: request[1], // Assuming the title is stored in the second element of each request
+        researcher:request[0],
+        amount:request[2].toString()
+      }));
+
+      // Update the state with the formatted funding requests data
+      setRequests(formattedRequests);
+      setButtonClicked(true);
     } catch (error) {
       console.error('Error fetching funding requests:', error);
+    }
+  };
+
+  const renderFundingRequests = () => {
+    if (buttonClicked) {
+      return (
+        // <ul>
+        //   {requests.map((request, index) => (
+        //     <>
+        //     Research title
+        //     <li key={index}>{request.title}</li>
+        //     Researcher's address
+        //     <li key={index}>{request.researcher}</li>
+        //     Amount requested
+        //     <li key={index}>{request.amount}</li>
+        //     </>
+        //   ))}
+        // </ul>
+        <ul>
+        {requests.map((request, index) => (
+          <li key={index}>
+            <h3>Research Title:</h3>
+            <p>{request.title}</p>
+            <h3>Researcher's Address:</h3>
+            <p>{request.researcher}</p>
+            <h3>Amount Requested:</h3>
+            <p>{request.amount}</p>
+          </li>
+        ))}
+      </ul>
+      );
+    } else {
+      return null;
     }
   };
 
   return (
     <div>
       <h1>Funding Requests</h1>
-      {requests.length === 0 ? (
-        <p>No funding requests available</p>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Paper Name</th>
-              <th>Researcher Address</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {requests.map((request, index) => (
-              <tr key={index}>
-                <td>{request.title}</td>
-                <td>{request.researcher}</td>
-                <td>{request.amount}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <button onClick={fetchFundingRequests}>Fetch Funding Requests</button>
+      {renderFundingRequests()}
     </div>
   );
 }

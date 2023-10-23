@@ -17,7 +17,7 @@ contract ResearchFunding {
 
     mapping(address => Profile) public researchers;
     mapping(address => Profile) public funders;
-    mapping(address => FundingRequest[]) public fundingRequests;
+    FundingRequest[] public fundingRequests; // Changed to a single array
 
     function registerResearcher(string memory _username, string memory _password) public {
         researchers[msg.sender] = Profile(_username, _password, "researcher");
@@ -46,24 +46,12 @@ contract ResearchFunding {
         return false;
     }
 
-    function listFundingRequests() public view returns (string[] memory, address[] memory, uint256[] memory) {
-    FundingRequest[] memory requests = fundingRequests[msg.sender];
-    string[] memory paperNames = new string[](requests.length);
-    address[] memory researcherAddresses = new address[](requests.length);
-    uint256[] memory amounts = new uint256[](requests.length);
-
-    for (uint256 i = 0; i < requests.length; i++) {
-        paperNames[i] = requests[i].title;
-        researcherAddresses[i] = requests[i].researcher;
-        amounts[i] = requests[i].amount;
+    function listFundingRequests() public view returns (FundingRequest[] memory) {
+        return fundingRequests; // Return all funding requests
     }
-
-    return (paperNames, researcherAddresses, amounts);
-}
-
 
     function makeFundingRequest(string memory _title, uint256 _amount) public {
         require(keccak256(abi.encodePacked(researchers[msg.sender].entity)) == keccak256(abi.encodePacked("researcher")), "Only researchers can make funding requests");
-        fundingRequests[msg.sender].push(FundingRequest(msg.sender, _title, _amount, false));
+        fundingRequests.push(FundingRequest(msg.sender, _title, _amount, false)); // Add to the general list
     }
 }
