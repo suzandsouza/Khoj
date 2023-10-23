@@ -5,7 +5,7 @@ import UserSigninApp from './pages/Signin'
 import Signup from "./pages/Signup"
 import Funder from './pages/funder'
 import Researcher from './pages/researcher'
-import RegisteredUsersPage from './pages/RegisteredUsersPage'
+
 const App = () => {
   return (
     <div>
@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/funder" element={<Funder />}/>
         <Route path="/researcher" element={<Researcher/>}/>
-        {/* <Route path="/reslist" element ={<RegisteredUsersPage/>}/> */}
+       
       </Routes>
     </BrowserRouter>
     </div>
