@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-//import { readFileSync } from 'fs';
 import { Web3Provider } from 'ethers';
 
-
-
+const Web3 = require("web3");
 const { ethers } = require("ethers");
 
 
@@ -15,7 +13,7 @@ const Signup = () => {
   const [registered, setRegistered] = useState(false);
   
   
-  const contractAddress = "0x33c86D2726F2A3BAECC420885FCf0dD7b4DDa4B9";
+  const contractAddress = "0x2d9bcB83aF078755d99917ADD4958aA286Db666e";
 
   const contractABI=[
     {
