@@ -1,9 +1,10 @@
 import { Button, Col } from "antd";
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.scss";
-
+import Footer from "../components/Footer";
+import MainPage from "../components/MainPage";
 export default function Home() {
   return (
     <div className={styles.homeContainer}>
@@ -15,11 +16,12 @@ export default function Home() {
           </h1>
           <h2>Empower Tomorrow's Innovators Today</h2>
           <Button type="primary" className={styles.button}>
-          {/* <Link to="/signin">Signin</Link> */}
+          <Link to="/signin">Signin</Link>
           </Button>
+          <MainPage />
         </Col>
       </Col>
-      <Navbar />
+      {/* <Footer /> */}
     </div>
   );
 }
