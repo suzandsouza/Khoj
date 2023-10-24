@@ -5,6 +5,7 @@ import UserSigninApp from './pages/Signin'
 import Signup from "./pages/Signup"
 import Funder from './pages/funder'
 import Researcher from './pages/researcher'
+import MyFundingProjects from './pages/myFundingProjects'
 
 const App = () => {
   return (
@@ -16,7 +17,7 @@ const App = () => {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/funder" element={<Funder />}/>
         <Route path="/researcher" element={<Researcher/>}/>
-       
+        <Route path= "/myFundingProjects" element={<MyFundingProjects/>}/>
       </Routes>
     </BrowserRouter>
     </div>

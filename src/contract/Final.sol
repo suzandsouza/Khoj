@@ -75,6 +75,32 @@ contract ResearchFunding {
         return fundingRequests;
     }
 
+    function listPersonalFundingRequests(
+        address _researcher
+    ) public view returns (FundingRequest[] memory) {
+        uint256 count = 0;
+
+        for (uint256 i = 0; i < fundingRequests.length; i++) {
+            if (fundingRequests[i].researcher == _researcher) {
+                count++;
+            }
+        }
+
+        FundingRequest[] memory researcherRequests = new FundingRequest[](
+            count
+        );
+        count = 0;
+
+        for (uint256 i = 0; i < fundingRequests.length; i++) {
+            if (fundingRequests[i].researcher == _researcher) {
+                researcherRequests[count] = fundingRequests[i];
+                count++;
+            }
+        }
+
+        return researcherRequests;
+    }
+
     function makeFundingRequest(string memory _title, uint256 _amount) public {
         require(
             keccak256(abi.encodePacked(researchers[msg.sender].entity)) ==
