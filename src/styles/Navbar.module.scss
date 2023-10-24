@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&family=Coda:wght@400;800&display=swap");
+
+.navContainer {
+  box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
+  padding: 0.1rem;
+  justify-content: space-between;
+  align-items: center;
+  .navItems {
+    display: flex;
+    align-items: center;
+    &:active {
+      color: #1b76ff;
+    }
+
+    a {
+      // font-family: Catamaran;
+      color: #000 !important;
+      font-size: 100rem;
+      margin: 0rem 1.5rem;
+      align-items: center;
+      font-weight: 500;
+    }
+    .navLogo {
+      font-size: 1.2rem;
+      margin-bottom: 0;
+      margin: 0rem;
+      font-weight: 800;
+      color: #1b76ff !important;
+    }
+  }
+}

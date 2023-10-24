@@ -1,4 +1,4 @@
-import { Button, Col } from "antd";
+import { Button, Col, Row } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -18,10 +18,10 @@ export default function Home() {
           <Button type="primary" className={styles.button}>
           <Link to="/signin">Signin</Link>
           </Button>
-          <MainPage />
         </Col>
       </Col>
-      {/* <Footer /> */}
+      <MainPage/>
+      <Footer />
     </div>
   );
 }
