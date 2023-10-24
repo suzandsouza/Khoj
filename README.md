@@ -1,4 +1,4 @@
-# Getting Started with Create React App IMPORTANT
+# Steps for us
 1. replace the ./abi/newabi.json with your json if u've changed the contract
 2. change contract address on signin, signup, researcher, funder .js pages
 
