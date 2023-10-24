@@ -1,12 +1,20 @@
 .homeContainer {
     .containerController {
-      // background-image: url("./background.png");
-      height: 92.8vh;
+      // background-image: url("../images/bg1.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 80vh;
       display: flex;
       justify-content: center;
+      margin-top: 0;
+      margin-left: 3.5rem;
+      margin-right: 3.5rem;
+      padding: 0;
       .text {
-        width: 80%;
+        width: 70%;
         margin: auto;
+        
         h1 {
           font-size: 4.2rem;
           font-weight: 600;
@@ -22,8 +30,11 @@
           font-weight: 600;
           margin: 0;
           border-radius: 8px;
-          margin-top: 2rem;
+          margin-top: 0.5rem;
           width: 20rem;
+        }
+        a{
+          font-size: 1.5rem;
         }
       }
     }
@@ -42,10 +53,11 @@
   
   .features {
     .heading {
-      font-size: 1.4rem;
-      padding-top: 6rem;
-      text-align: center;
-      margin: 0;
+    font-size: 2rem;
+    padding-top: 6rem;
+    text-align: center;
+    margin: 0;
+    margin: auto;
     }
     .divider {
       background-color: #1b76ff;

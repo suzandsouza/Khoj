@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { Card, Button } from 'antd';
+import { Card, Button, Divider } from 'antd';
 import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
 import '../styles/vote.css'
+import styles from "../styles/Home.module.scss"
 function MainPage() {
   const [requests, setRequests] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -62,13 +63,14 @@ function MainPage() {
       return (
         <div className="card-container">
           {requests.map((request, index) => (
-            <Card key={index} title={request.title} className="funding-card">
+            <Card key={index} title={request.title} className="styles.card">
               <p><strong>Researcher's Address:</strong> {request.researcher}</p>
               <p><strong>Amount Requested:</strong> {request.amount}</p>
               <Button type="primary" onClick={() => voteForRequest(index)}>Vote</Button>
             </Card>
           ))}
         </div>
+        
       );
     } else {
       return null;
@@ -76,8 +78,9 @@ function MainPage() {
   };
 
   return (
-    <div>
-      <h2 className='funding-req-title'>Funding Requests</h2>
+    <div className={styles.features}>
+      <h1 className={styles.heading}>Funding Requests</h1>
+      <Divider className={styles.divider} />
       <Button className="fetch-button" onClick={fetchFundingRequests}>Fetch Funding Requests</Button>
       {renderFundingRequests()}
     </div>
