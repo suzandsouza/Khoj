@@ -2,6 +2,7 @@
 1. replace the ./abi/newabi.json with your json if u've changed the contract
 2. change contract address on signin, signup, researcher, funder .js pages
 
+<img src="Screenshot 2023-10-24 122007.png">
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
