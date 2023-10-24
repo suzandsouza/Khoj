@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Web3Provider } from 'ethers';
 import abi from "../abi/newabi.json"
+import contractaddress from "../abi/contractaddress.json"
 const Web3 = require("web3");
 const { ethers } = require("ethers");
 
@@ -13,7 +14,7 @@ const Signup = () => {
   const [registered, setRegistered] = useState(false);
   
   
-  const contractAddress = "0x31D62514BcEfCD6131b5593999a285084EfB6051";
+  const contractAddress = contractaddress
 
   const contractABI=abi
   const handleSignup = async () => {

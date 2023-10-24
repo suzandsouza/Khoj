@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import abi from "../abi/newabi.json"
-
+import contractaddress from "../abi/contractaddress.json"
 function FundersPage() {
   const [requests, setRequests] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -22,7 +22,7 @@ function FundersPage() {
         await window.ethereum.enable();
 
         // Get the deployed contract address and ABI
-        const contractAddress = '0x31D62514BcEfCD6131b5593999a285084EfB6051';
+        const contractAddress = contractaddress;
         const contractABI = abi;
         // Create a new contract instance
         const contract = new ethers.Contract(contractAddress, contractABI, provider);
