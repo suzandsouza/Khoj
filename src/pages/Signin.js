@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import abi from "../abi/newabi.json"
+import contractaddress from "../abi/contractaddress.json"
 const { ethers } = require("ethers");
 
 const Login = () => {
@@ -10,8 +11,7 @@ const Login = () => {
 	const navigate = useNavigate();
 
 
-const contractAddress="0x31D62514BcEfCD6131b5593999a285084EfB6051";
-
+const contractAddress=contractaddress
 const contractABI=abi
 	const handleLogin = async () => {
 		try {
