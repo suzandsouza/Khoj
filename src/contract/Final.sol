@@ -1,4 +1,4 @@
-// SPDX-License-Identifier:MIT
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract ResearchFunding {
@@ -13,11 +13,12 @@ contract ResearchFunding {
         string title;
         uint256 amount;
         bool approved;
+        uint256 votes; // Added votes field
     }
 
     mapping(address => Profile) public researchers;
     mapping(address => Profile) public funders;
-    FundingRequest[] public fundingRequests; // Changed to a single array
+    FundingRequest[] public fundingRequests;
 
     function registerResearcher(string memory _username, string memory _password) public {
         researchers[msg.sender] = Profile(_username, _password, "researcher");
@@ -47,11 +48,21 @@ contract ResearchFunding {
     }
 
     function listFundingRequests() public view returns (FundingRequest[] memory) {
-        return fundingRequests; // Return all funding requests
+        return fundingRequests;
     }
 
     function makeFundingRequest(string memory _title, uint256 _amount) public {
         require(keccak256(abi.encodePacked(researchers[msg.sender].entity)) == keccak256(abi.encodePacked("researcher")), "Only researchers can make funding requests");
-        fundingRequests.push(FundingRequest(msg.sender, _title, _amount, false)); // Add to the general list
+        fundingRequests.push(FundingRequest(msg.sender, _title, _amount, false, 0));
+    }
+
+    function voteForRequest(uint256 _index) public {
+        require(keccak256(abi.encodePacked(funders[msg.sender].entity)) == keccak256(abi.encodePacked("funder")), "Only funders can vote");
+        require(_index < fundingRequests.length, "Invalid request index");
+
+        FundingRequest storage request = fundingRequests[_index];
+        require(!request.approved, "Request already approved");
+
+        request.votes++;
     }
 }

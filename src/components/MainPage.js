@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import abi from '../abi/newabi.json'
-
+import { Card, Button } from 'antd';
+import abi from "../abi/newabi.json"
+import contractaddress from "../abi/contractaddress.json"
+import '../css/vote.css'
 function MainPage() {
   const [requests, setRequests] = useState([]);
+  const [buttonClicked, setButtonClicked] = useState(false);
   const [contract, setContract] = useState(null);
-  const [connectedAddress, setConnectedAddress] = useState(null);
+  const [account, setAccount] = useState(null);
 
   useEffect(() => {
     connectToEthereum();
@@ -15,18 +18,13 @@ function MainPage() {
     try {
       if (window.ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        await window.ethereum.enable();
-
-        const contractAddress = 'CONTRACT_ADDRESS';
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        const contractAddress = contractaddress;
         const contractABI = abi;
-        const contract = new ethers.Contract(contractAddress, contractABI, provider);
-
+        const contract = new ethers.Contract(contractAddress, contractABI, provider.getSigner(account));
         setContract(contract);
-
-        const accounts = await provider.listAccounts();
-        setConnectedAddress(accounts[0]);
-
-        fetchFundingRequests();
+        setAccount(account);
       } else {
         console.error('MetaMask extension not detected');
       }
@@ -38,16 +36,13 @@ function MainPage() {
   const fetchFundingRequests = async () => {
     try {
       const fundingRequests = await contract.listFundingRequests();
-
       const formattedRequests = fundingRequests.map((request) => ({
-        researcher: request.researcher,
-        title: request.title,
-        amount: request.amount,
-        approved: request.approved,
-        votes: request.votes,
+        title: request[1],
+        researcher: request[0],
+        amount: request[2].toString()
       }));
-
       setRequests(formattedRequests);
+      setButtonClicked(true);
     } catch (error) {
       console.error('Error fetching funding requests:', error);
     }
@@ -55,44 +50,37 @@ function MainPage() {
 
   const voteForRequest = async (index) => {
     try {
-      await contract.voteForRequest(index);
+      await contract.voteForRequest(index, { from: account });
       await fetchFundingRequests();
     } catch (error) {
       console.error('Error voting for request:', error);
     }
   };
 
+  const renderFundingRequests = () => {
+    if (buttonClicked) {
+      return (
+        <div className="card-container">
+          {requests.map((request, index) => (
+            <Card key={index} title={request.title} className="funding-card">
+              <p><strong>Researcher's Address:</strong> {request.researcher}</p>
+              <p><strong>Amount Requested:</strong> {request.amount}</p>
+              <Button type="primary" onClick={() => voteForRequest(index)}>Vote</Button>
+            </Card>
+          ))}
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return (
     <div>
-    
-    {connectedAddress && (
-      <p>Connected Address: {connectedAddress}</p>
-    )}
-    {connectedAddress && (
-        <>
-        <h1>Research Requests</h1>
-      <ul>
-        {requests.map((request, index) => (
-          <li key={index}>
-            <h3>Research Title:</h3>
-            <p>{request.title}</p>
-            <h3>Researcher's Address:</h3>
-            <p>{request.researcher}</p>
-            <h3>Amount Requested:</h3>
-            <p>{request.amount}</p>
-            <h3>Approved:</h3>
-            <p>{request.approved ? 'Yes' : 'No'}</p>
-            <h3>Votes:</h3>
-            <p>{request.votes}</p>
-            {!request.approved && (
-              <button onClick={() => voteForRequest(index)}>Vote</button>
-            )}
-          </li>
-        ))}
-      </ul>
-      </>
-    )}
-  </div>
+      <h2 className='funding-req-title'>Funding Requests</h2>
+      <Button className="fetch-button" onClick={fetchFundingRequests}>Fetch Funding Requests</Button>
+      {renderFundingRequests()}
+    </div>
   );
 }
 

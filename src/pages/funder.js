@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
+import { Card, Button } from 'antd';
 import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
+import '../css/vote.css'
 function FundersPage() {
   const [requests, setRequests] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);
-  const [contract, setContract] = useState(null); // Add the contract variable to the state
+  const [contract, setContract] = useState(null);
+  const [account, setAccount] = useState(null);
+
   useEffect(() => {
-    // Connect to the Ethereum network
     connectToEthereum();
   }, []);
 
   const connectToEthereum = async () => {
     try {
-      // Check if the MetaMask extension is installed
       if (window.ethereum) {
-        // Create a new ethers.js provider using MetaMask
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-        // Request access to the user's MetaMask accounts
-        await window.ethereum.enable();
-
-        // Get the deployed contract address and ABI
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
         const contractAddress = contractaddress;
         const contractABI = abi;
-        // Create a new contract instance
-        const contract = new ethers.Contract(contractAddress, contractABI, provider);
-
-        // Set the contract instance in the state
+        const contract = new ethers.Contract(contractAddress, contractABI, provider.getSigner(account));
         setContract(contract);
+        setAccount(account);
       } else {
         console.error('MetaMask extension not detected');
       }
@@ -39,17 +35,12 @@ function FundersPage() {
 
   const fetchFundingRequests = async () => {
     try {
-      // Call the smart contract function to get the funding requests
       const fundingRequests = await contract.listFundingRequests();
-      console.log(fundingRequests)
-      // Transform the fundingRequests data into a suitable format
       const formattedRequests = fundingRequests.map((request) => ({
-        title: request[1], // Assuming the title is stored in the second element of each request
-        researcher:request[0],
-        amount:request[2].toString()
+        title: request[1],
+        researcher: request[0],
+        amount: request[2].toString()
       }));
-
-      // Update the state with the formatted funding requests data
       setRequests(formattedRequests);
       setButtonClicked(true);
     } catch (error) {
@@ -57,33 +48,27 @@ function FundersPage() {
     }
   };
 
+  const voteForRequest = async (index) => {
+    try {
+      await contract.voteForRequest(index, { from: account });
+      await fetchFundingRequests();
+    } catch (error) {
+      console.error('Error voting for request:', error);
+    }
+  };
+
   const renderFundingRequests = () => {
     if (buttonClicked) {
       return (
-        // <ul>
-        //   {requests.map((request, index) => (
-        //     <>
-        //     Research title
-        //     <li key={index}>{request.title}</li>
-        //     Researcher's address
-        //     <li key={index}>{request.researcher}</li>
-        //     Amount requested
-        //     <li key={index}>{request.amount}</li>
-        //     </>
-        //   ))}
-        // </ul>
-        <ul>
-        {requests.map((request, index) => (
-          <li key={index}>
-            <h3>Research Title:</h3>
-            <p>{request.title}</p>
-            <h3>Researcher's Address:</h3>
-            <p>{request.researcher}</p>
-            <h3>Amount Requested:</h3>
-            <p>{request.amount}</p>
-          </li>
-        ))}
-      </ul>
+        <div className="card-container">
+          {requests.map((request, index) => (
+            <Card key={index} title={request.title} className="funding-card">
+              <p><strong>Researcher's Address:</strong> {request.researcher}</p>
+              <p><strong>Amount Requested:</strong> {request.amount}</p>
+              <Button type="primary" onClick={() => voteForRequest(index)}>Vote</Button>
+            </Card>
+          ))}
+        </div>
       );
     } else {
       return null;
@@ -92,8 +77,8 @@ function FundersPage() {
 
   return (
     <div>
-      <h1>Funding Requests</h1>
-      <button onClick={fetchFundingRequests}>Fetch Funding Requests</button>
+      <h1 className='funding-req-title'>Funding Requests</h1>
+      <Button className="fetch-button" onClick={fetchFundingRequests}>Fetch Funding Requests</Button>
       {renderFundingRequests()}
     </div>
   );
