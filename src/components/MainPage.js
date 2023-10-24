@@ -4,7 +4,7 @@ import { Card, Button } from 'antd';
 import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
 import '../css/vote.css'
-function FundersPage() {
+function MainPage() {
   const [requests, setRequests] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [contract, setContract] = useState(null);
@@ -77,11 +77,11 @@ function FundersPage() {
 
   return (
     <div>
-      <h1 className='funding-req-title'>Funding Requests</h1>
+      <h2 className='funding-req-title'>Funding Requests</h2>
       <Button className="fetch-button" onClick={fetchFundingRequests}>Fetch Funding Requests</Button>
       {renderFundingRequests()}
     </div>
   );
 }
 
-export default FundersPage;
+export default MainPage;

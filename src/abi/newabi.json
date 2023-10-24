@@ -56,6 +56,19 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "voteForRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "_address",
 				"type": "address"
@@ -140,6 +153,11 @@
 				"internalType": "bool",
 				"name": "approved",
 				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "votes",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -170,6 +188,11 @@
 						"internalType": "bool",
 						"name": "approved",
 						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "votes",
+						"type": "uint256"
 					}
 				],
 				"internalType": "struct ResearchFunding.FundingRequest[]",
