@@ -69,6 +69,7 @@ const Researcher = () => {
         </div>
         
         <button type="submit">Submit</button>
+        <button><a href='/myFundingProjects'>My Funding Requests</a></button>
       </form>
     </div>
   );

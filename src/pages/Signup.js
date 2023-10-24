@@ -4,6 +4,7 @@ import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
 import { Form, Input, Button, Card, Select } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import Navbar from "../components/Navbar"
 
 const { ethers } = require("ethers");
 const { Option } = Select;
@@ -58,8 +59,10 @@ const Signup = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh"}}>
-      <Card style={{ width: 400, padding: 20, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)" }}>
+    <div>
+      <Navbar/>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh"}}>
+      <Card style={{ width: 400, padding: 20, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.25)" }}>
         {registered ? (
           <div>
             <h2>Registration Successful!</h2>
@@ -107,6 +110,7 @@ const Signup = () => {
           </div>
         )}
       </Card>
+    </div>
     </div>
   );
 };

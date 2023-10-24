@@ -4,6 +4,7 @@ import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
 import { Form, Input, Button, Card, Select } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import Navbar from "../components/Navbar";
 const { ethers } = require("ethers");
 
 const Login = () => {
@@ -67,7 +68,9 @@ const contractABI=abi
 	  };
 	
 	return (
-		<div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+		<div>
+		<Navbar/>
+		<div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "80vh" }}>
 		<Card style={{ width: 400, padding: 20, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)" }}>
 		  <h2 style={{ textAlign: "center" }}>User Login</h2>
 		  <Form form={form} onFinish={handleLogin}>
@@ -93,6 +96,7 @@ const contractABI=abi
 			</Form.Item>
 		  </Form>
 		</Card>
+	  </div>
 	  </div>
 	);
   };
