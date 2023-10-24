@@ -1,0 +1,22 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .funding-card {
+    width: 300px;
+    margin: 10px;
+  }
+  
+  .fetch-button {
+    margin-bottom: 10px;
+    
+  }
+
+  .funding-req-title{
+    color: #1890ff;
+    margin-bottom: 20px;
+    font-family:Arial, Helvetica, sans-serif
+  }
+  

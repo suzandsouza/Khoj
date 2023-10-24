@@ -2,73 +2,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_title",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "makeFundingRequest",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_username",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_password",
-				"type": "string"
-			}
-		],
-		"name": "registerFunder",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_username",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_password",
-				"type": "string"
-			}
-		],
-		"name": "registerResearcher",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_index",
-				"type": "uint256"
-			}
-		],
-		"name": "voteForRequest",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "address",
 				"name": "_address",
 				"type": "address"
@@ -145,6 +78,11 @@
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
+			},
+			{
 				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
@@ -177,6 +115,11 @@
 					{
 						"internalType": "string",
 						"name": "title",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "description",
 						"type": "string"
 					},
 					{
@@ -226,6 +169,11 @@
 						"type": "string"
 					},
 					{
+						"internalType": "string",
+						"name": "description",
+						"type": "string"
+					},
+					{
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -247,6 +195,65 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_title",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "makeFundingRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_password",
+				"type": "string"
+			}
+		],
+		"name": "registerFunder",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_password",
+				"type": "string"
+			}
+		],
+		"name": "registerResearcher",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -276,6 +283,19 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "voteForRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

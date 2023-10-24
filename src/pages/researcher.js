@@ -6,9 +6,14 @@ import abi from "../abi/newabi.json"
 const Researcher = () => {
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
   };
 
   const handleAmountChange = (e) => {
@@ -30,10 +35,11 @@ const Researcher = () => {
       );
 
       // Call the `makeFundingRequest` function
-      await contract.makeFundingRequest(title, amount);
+      await contract.makeFundingRequest(title,description, amount);
 
       // Reset the form fields
       setTitle('');
+      setDescription('');
       setAmount('');
 
       // Show success message or redirect to another page
@@ -54,9 +60,14 @@ const Researcher = () => {
           <input type="text" value={title} onChange={handleTitleChange} />
         </div>
         <div>
+          <label>Description:</label>
+          <input type="text" value={description} onChange={handleDescriptionChange} />
+        </div>
+        <div>
           <label>Amount:</label>
           <input type="number" value={amount} onChange={handleAmountChange} />
         </div>
+        
         <button type="submit">Submit</button>
       </form>
     </div>

@@ -11,6 +11,7 @@ contract ResearchFunding {
     struct FundingRequest {
         address researcher;
         string title;
+        string description;
         uint256 amount;
         bool approved;
         uint256 votes; // Added votes field
@@ -101,14 +102,18 @@ contract ResearchFunding {
         return researcherRequests;
     }
 
-    function makeFundingRequest(string memory _title, uint256 _amount) public {
+    function makeFundingRequest(
+        string memory _title,
+        string memory _description,
+        uint256 _amount
+    ) public {
         require(
             keccak256(abi.encodePacked(researchers[msg.sender].entity)) ==
                 keccak256(abi.encodePacked("researcher")),
             "Only researchers can make funding requests"
         );
         fundingRequests.push(
-            FundingRequest(msg.sender, _title, _amount, false, 0)
+            FundingRequest(msg.sender, _title, _description, _amount, false, 0)
         );
     }
 

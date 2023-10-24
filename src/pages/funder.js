@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Card, Button } from 'antd';
 import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
-import '../css/vote.css'
+import '../styles/vote.css'
 function FundersPage() {
   const [requests, setRequests] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -39,7 +39,8 @@ function FundersPage() {
       const formattedRequests = fundingRequests.map((request) => ({
         title: request[1],
         researcher: request[0],
-        amount: request[2].toString()
+        description: request[2],
+        amount: request[3].toString()
       }));
       setRequests(formattedRequests);
       setButtonClicked(true);
@@ -64,6 +65,7 @@ function FundersPage() {
           {requests.map((request, index) => (
             <Card key={index} title={request.title} className="funding-card">
               <p><strong>Researcher's Address:</strong> {request.researcher}</p>
+              <p><strong>Description:</strong> {request.description}</p>
               <p><strong>Amount Requested:</strong> {request.amount}</p>
               <Button type="primary" onClick={() => voteForRequest(index)}>Vote</Button>
             </Card>

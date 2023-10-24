@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Card, Button } from 'antd';
 import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
-import '../css/vote.css'
+import '../styles/vote.css'
 function MainPage() {
   const [requests, setRequests] = useState([]);
   const [buttonClicked, setButtonClicked] = useState(false);

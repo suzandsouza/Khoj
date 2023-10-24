@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import contractaddress from "../abi/contractaddress.json";
 import abi from "../abi/newabi.json"
-import '../css/vote.css'
-import { Card, Button } from 'antd';
+import '../styles/vote.css'
+import { Card } from 'antd';
 
 const MyFundingProjects = () => {
   const [fundingRequests, setFundingRequests] = useState([]);
@@ -29,7 +29,8 @@ const MyFundingProjects = () => {
             const formattedRequests = requests.map((request) => ({
               title: request[1],
               researcher: request[0],
-              amount: request[2].toString()
+              description: request[2],
+              amount: request[3].toString()
             }));
             setFundingRequests(formattedRequests);
             
@@ -50,6 +51,7 @@ const MyFundingProjects = () => {
           {fundingRequests.map((request, index) => (
             <Card key={index} title={request.title} className="funding-card">
               <p><strong>Researcher's Address:</strong> {request.researcher}</p>
+              <p><strong>Description:</strong> {request.description}</p>
               <p><strong>Amount Requested:</strong> {request.amount}</p>
             </Card>
           ))}
