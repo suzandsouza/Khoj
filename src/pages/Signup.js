@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Web3Provider } from 'ethers';
 import abi from "../abi/newabi.json"
 import contractaddress from "../abi/contractaddress.json"
-const Web3 = require("web3");
-const { ethers } = require("ethers");
+import { Form, Input, Button, Card, Select } from "antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
+const { ethers } = require("ethers");
+const { Option } = Select;
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
   const [registered, setRegistered] = useState(false);
   
-  
+  const [form] = Form.useForm(); // Create a form instance
   const contractAddress = contractaddress
 
   const contractABI=abi
-  const handleSignup = async () => {
+  const handleSignup = async (values) => {
     try {
       if (typeof window.ethereum === 'undefined') {
         // MetaMask is not installed or not accessible
@@ -37,10 +35,10 @@ const Signup = () => {
       // Create a contract instance
       const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-      if (role === "researcher") {
-        await contract.registerResearcher(email, password);
-      } else if (role === "funder") {
-        await contract.registerFunder(email, password);
+      if (values.role === "researcher") {
+        await contract.registerResearcher(values.email, values.password);
+      } else if (values.role === "funder") {
+        await contract.registerFunder(values.email, values.password);
       } else {
         alert("Invalid role");
         return;
@@ -55,45 +53,60 @@ const Signup = () => {
   };
 
   const handleReset = () => {
-    setEmail("");
-    setPassword("");
-    setRole("");
+    form.resetFields();
     setRegistered(false);
   };
 
   return (
-    <div>
-      {registered ? (
-        <div>
-          <h2>Registration Successful!</h2>
-          <p>
-            Please proceed to the <Link to="/signin">Signin Page</Link> to log in.
-          </p>
-          <button onClick={handleReset}>Register Another User</button>
-        </div>
-      ) : (
-        <div>
-          <h2>User Signup</h2>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="">Select Role</option>
-            <option value="researcher">Researcher</option>
-            <option value="funder">Funder</option>
-          </select>
-          <button onClick={handleSignup}>Signup</button>
-        </div>
-      )}
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh"}}>
+      <Card style={{ width: 400, padding: 20, boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)" }}>
+        {registered ? (
+          <div>
+            <h2>Registration Successful!</h2>
+            <p>
+              Please proceed to the <Link to="/signin">Signin Page</Link> to log in.
+            </p>
+            <Button type="primary" onClick={handleReset}>
+              Register Another User
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <h2 style={{ textAlign: "center" }}>User Signup</h2>
+            <Form form={form} onFinish={handleSignup}>
+              <Form.Item
+                name="email"
+                rules={[
+                  { required: true, message: "Please enter your email" },
+                  { type: "email", message: "Please enter a valid email" },
+                ]}
+              >
+                <Input prefix={<UserOutlined />} placeholder="Email" />
+              </Form.Item>
+              <Form.Item
+                name="password"
+                rules={[{ required: true, message: "Please enter your password" }]}
+              >
+                <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+              </Form.Item>
+              <Form.Item
+                name="role"
+                rules={[{ required: true, message: "Please select a role" }]}
+              >
+                <Select placeholder="Select Role">
+                  <Option value="researcher">Researcher</Option>
+                  <Option value="funder">Funder</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" style={{ width: "100%", fontSize: "15px"}}>
+                  Signup
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        )}
+      </Card>
     </div>
   );
 };

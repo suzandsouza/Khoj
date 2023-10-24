@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "antd": "^5.10.2",
     "ethers": "5.7.2",
     "fs": "^0.0.1-security",
@@ -16,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build --config webpack.config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -37,7 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "google-fonts-webpack-plugin": "^0.4.4"
   }
-  
-  
 }
