@@ -14,12 +14,21 @@ contract ResearchFunding {
         string description;
         uint256 amount;
         bool approved;
-        uint256 votes; // Added votes field
+        uint256 votes;
+        //uint256 totalFunds; // Added votes field
     }
-
+    mapping(uint256 => uint256) public indAmount;
+    mapping(address => uint256) public fund;
     mapping(address => Profile) public researchers;
     mapping(address => Profile) public funders;
     FundingRequest[] public fundingRequests;
+
+    event Funded(address _funder, uint256 _amount);
+    event OwnerWithdraw(uint256 _amount);
+
+    function getContractBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
 
     function registerResearcher(
         string memory _username,
@@ -129,5 +138,40 @@ contract ResearchFunding {
         require(!request.approved, "Request already approved");
 
         request.votes++;
+    }
+
+    function fundRequest(uint256 _index) public payable {
+        require(
+            keccak256(abi.encodePacked(funders[msg.sender].entity)) ==
+                keccak256(abi.encodePacked("funder")),
+            "Only funders can fund requests"
+        );
+        require(_index < fundingRequests.length, "Invalid request index");
+
+        FundingRequest storage request = fundingRequests[_index];
+        require(!request.approved, "Request already approved");
+        require(
+            request.amount >= msg.value,
+            "Funding amount exceeds request amount"
+        );
+
+        fund[msg.sender] += msg.value; //for contract balance
+        indAmount[_index] += msg.value; //for individual contract address
+        emit Funded(msg.sender, msg.value);
+    }
+
+    function withdrawFunds(uint256 _index) public {
+        FundingRequest storage request = fundingRequests[_index];
+        require(
+            msg.sender == request.researcher,
+            "Only the researcher can withdraw funds"
+        );
+        require(request.approved, "Request not approved");
+
+        uint256 amountToSend = address(this).balance;
+        (bool success, ) = msg.sender.call{value: amountToSend}("");
+        require(success, "unable to send!");
+
+        emit OwnerWithdraw(amountToSend);
     }
 }
