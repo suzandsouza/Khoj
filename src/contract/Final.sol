@@ -168,7 +168,7 @@ contract ResearchFunding {
         );
         require(request.approved, "Request not approved");
 
-        uint256 amountToSend = address(this).balance;
+        uint256 amountToSend = indAmount[_index];
         (bool success, ) = msg.sender.call{value: amountToSend}("");
         require(success, "unable to send!");
 
