@@ -64,17 +64,22 @@ const MyFundingProjects = () => {
   
         // Withdraw funds for the selected funding request
         await contract.withdrawFunds(index);
-  
+        console.log("hello")
+        alert("Success! Funds have been withdrawn.");
+
         // Refresh the funding requests
         const requests = await contract.listPersonalFundingRequests(researcherAddress);
         const formattedRequests = requests.map((request) => ({
           title: request[1],
           researcher: request[0],
           description: request[2],
-          amount: request[3].toString()
+          amount: request[3].toString(),
+          fundsWithdrawn: request[6]
         }));
+
         setFundingRequests(formattedRequests);
       } catch (error) {
+        
         console.error('Error withdrawing funds:', error);
       }
     };
@@ -86,7 +91,8 @@ const MyFundingProjects = () => {
             <p><strong>Researcher's Address:</strong> {request.researcher}</p>
             <p><strong>Description:</strong> {request.description}</p>
             <p><strong>Amount Requested:</strong> {request.amount}</p>
-            <button onClick={() => handleWithdraw(index)}>Withdraw</button>
+            <p><strong>Funds Withdrawn:</strong> {request.fundsWithdrawn===true ? 'Yes' : 'No'}</p>
+            {!request.fundsWithdrawn && <button onClick={() => handleWithdraw(index)}>Withdraw</button>}
           </Card>
         ))}
       </div>

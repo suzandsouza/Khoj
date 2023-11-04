@@ -15,6 +15,7 @@ contract ResearchFunding {
         uint256 amount;
         bool approved;
         uint256 votes;
+        bool fundsWithdrawn;
         //uint256 totalFunds; // Added votes field
     }
     mapping(uint256 => uint256) public indAmount;
@@ -122,7 +123,15 @@ contract ResearchFunding {
             "Only researchers can make funding requests"
         );
         fundingRequests.push(
-            FundingRequest(msg.sender, _title, _description, _amount, false, 0)
+            FundingRequest(
+                msg.sender,
+                _title,
+                _description,
+                _amount,
+                false,
+                0,
+                false
+            )
         );
     }
 
@@ -166,12 +175,13 @@ contract ResearchFunding {
             msg.sender == request.researcher,
             "Only the researcher can withdraw funds"
         );
-        require(request.approved, "Request not approved");
+        require(request.fundsWithdrawn == false, "Funds already withdrawn");
+        //require(request.approved, "Request not approved");
 
         uint256 amountToSend = indAmount[_index];
         (bool success, ) = msg.sender.call{value: amountToSend}("");
         require(success, "unable to send!");
-
+        request.fundsWithdrawn = true;
         emit OwnerWithdraw(amountToSend);
     }
 }
