@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import contractaddress from "../abi/contractaddress.json";
 import abi from "../abi/newabi.json"
+import "../styles/researcher.scss"
 
 const Researcher = () => {
   const [title, setTitle] = useState('');
@@ -52,24 +53,42 @@ const Researcher = () => {
   };
 
   return (
-    <div>
+    <div className="researcher-container">
       <h2>Researcher</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
-          <input type="text" value={title} onChange={handleTitleChange} />
+      <form className="researcher-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
         </div>
-        <div>
-          <label>Description:</label>
-          <input type="text" value={description} onChange={handleDescriptionChange} />
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
+          <textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          ></textarea>
         </div>
-        <div>
-          <label>Amount:</label>
-          <input type="number" value={amount} onChange={handleAmountChange} />
+        <div className="form-group">
+          <label htmlFor="amount">Amount</label>
+          <input
+            type="number"
+            id="amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
         </div>
-        
-        <button type="submit">Submit</button>
-        <button><a href='/myFundingProjects'>My Funding Requests</a></button>
+        <div className="form-group">
+          <button type="submit">Submit</button>
+          <a href="/myFundingProjects">My Funding Requests</a>
+        </div>
       </form>
     </div>
   );

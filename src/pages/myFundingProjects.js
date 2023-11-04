@@ -64,7 +64,7 @@ const MyFundingProjects = () => {
   
         // Withdraw funds for the selected funding request
         await contract.withdrawFunds(index);
-        console.log("hello")
+        //console.log("hello")
         alert("Success! Funds have been withdrawn.");
 
         // Refresh the funding requests
@@ -91,7 +91,7 @@ const MyFundingProjects = () => {
             <p><strong>Researcher's Address:</strong> {request.researcher}</p>
             <p><strong>Description:</strong> {request.description}</p>
             <p><strong>Amount Requested:</strong> {request.amount}</p>
-            <p><strong>Funds Withdrawn:</strong> {request.fundsWithdrawn===true ? 'Yes' : 'No'}</p>
+            <p><strong>Funds Withdrawn:</strong> {request.fundsWithdrawn ? 'Yes' : 'No'}</p>
             {!request.fundsWithdrawn && <button onClick={() => handleWithdraw(index)}>Withdraw</button>}
           </Card>
         ))}
