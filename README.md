@@ -13,6 +13,6 @@ To run this project, you will need to add the deployed contract address to src/a
 ```
 
 ## Developers
-
-- [Martina John](https://github.com/MartinaJohn)
 - [Suzan Dsouza](https://github.com/suzandsouza)
+- [Martina John](https://github.com/MartinaJohn)
+
